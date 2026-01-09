@@ -1,11 +1,248 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>WebAuthn Invoke on Load</title>
+    <title>Pokedex</title>
+    <style>
+        /* Global */
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+
+        /* Pokedex shell */
+        pokedex-case {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            height: 500px;
+            border: 10px solid #333;
+            border-radius: 20px;
+            background-color: #ff0000;
+        }
+
+        /* Upper section */
+        pokedex-upper-section {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+            min-height: 0;
+        }
+
+        /* Indicator lights */
+        pokedex-indicator-lights {
+            flex: 1;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            padding-left: 4px;
+        }
+
+        pokedex-indicator-lights > * {
+            display: inline-block;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+
+        pokedex-indicator-lights light-large-blue {
+            width: 36px;
+            height: 36px;
+            border: 5px solid white;
+            outline: 2px solid black;
+            background: #2b66ff;
+        }
+
+        pokedex-indicator-lights light-small-red,
+        pokedex-indicator-lights light-small-yellow,
+        pokedex-indicator-lights light-small-green {
+            width: 12px;
+            height: 12px;
+        }
+
+        pokedex-indicator-lights light-small-red { background: #ff3b3b; }
+        pokedex-indicator-lights light-small-yellow { background: #ffd24d; }
+        pokedex-indicator-lights light-small-green { background: #6bff7a; }
+
+        /* Display container */
+        pokedex-display-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: #fff;
+            padding: 8px;
+            border-radius: 5px;
+            flex: 4;
+            min-height: 0;
+            border: 2px solid black;
+        }
+
+        pokedex-display-container > pokedex-main-screen {
+            flex: 8;
+            background-color: #000;
+            color: #0f0;
+            overflow: auto;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        /* Extras under main screen */
+        pokedex-display-container-extras {
+            flex: 2;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        pokedex-display-container-button {
+            flex: 3;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 5px;
+        }
+
+        pokedex-red-button {
+            width: 24px;
+            height: 24px;
+            background-color: red;
+            margin-left: 5%;
+            border-radius: 50%;
+            border: 2px solid black;
+        }
+
+        pokedex-speaker-grill {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            padding: 4px 0;
+        }
+
+        pokedex-speaker { width: 100%; height: 5px; background: #333; }
+
+        /* Lower section */
+        pokedex-lower-section {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        pokedex-lower-left-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        pokedex-lower-right-section { flex: 1; display: flex; }
+
+        pokedex-lower-left-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-evenly;
+            align-items: center;
+            flex: 1;
+        }
+
+        pokedex-lower-left-buttons pokedex-select-button,
+        pokedex-lower-left-buttons pokedex-start-button {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            border-radius: 5px;
+            border: 2px solid black;
+        }
+
+        pokedex-lower-left-buttons pokedex-select-button { background: #6ec1ff; }
+        pokedex-lower-left-buttons pokedex-start-button { background: #ff6b6b; }
+
+        /* Mini screen and d-pad */
+        pokedex-mini-screen {
+            flex: 3;
+            background-color: darkgreen;
+            color: #fff;
+            padding: 10px;
+            overflow: auto;
+            border-radius: 5px;
+        }
+
+        pokedex-directional-pad {
+            flex: 1;
+            background-color: #555;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+        }
+    </style>
 </head>
+
 <body>
+    <pokedex-case>
+        <pokedex-upper-section>
+            <pokedex-indicator-lights>
+                <light-large-blue></light-large-blue>
+                <light-small-red></light-small-red>
+                <light-small-yellow></light-small-yellow>
+                <light-small-green></light-small-green>
+            </pokedex-indicator-lights>
+            <pokedex-display-container>
+                <pokedex-main-screen>
+                    <img src="https://media1.tenor.com/m/UZJd1pjj4NMAAAAC/surprised-pikachu.gif" alt="pikapika"
+                        width="100%">
+                </pokedex-main-screen>
+                <pokedex-display-container-extras>
+                    <pokedex-display-container-button>
+                        <pokedex-red-button>
+                        </pokedex-red-button>
+                    </pokedex-display-container-button>
+                    <pokedex-speaker-grill>
+                        <pokedex-speaker></pokedex-speaker>
+                        <pokedex-speaker></pokedex-speaker>
+                        <pokedex-speaker></pokedex-speaker>
+                    </pokedex-speaker-grill>
+                </pokedex-display-container-extras>
+            </pokedex-display-container>
+        </pokedex-upper-section>
+        <pokedex-lower-section>
+            <pokedex-lower-left-section>
+                <pokedex-lower-left-buttons>
+                    <pokedex-select-button>
+                    </pokedex-select-button>
+                    <pokedex-start-button>
+                    </pokedex-start-button>
+                </pokedex-lower-left-buttons>
+                <pokedex-mini-screen>
+                </pokedex-mini-screen>
+            </pokedex-lower-left-section>
+            <pokedex-lower-right-section>
+                <pokedex-directional-pad>
+                </pokedex-directional-pad>
+            </pokedex-lower-right-section>
+        </pokedex-lower-section>
+    </pokedex-case>
     <script src="passkey.js"></script>
 </body>
+
 </html>
